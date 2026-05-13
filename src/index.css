@@ -1,0 +1,301 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ═══════════════════════════════════════════════════════════════════════
+   LIGHT MODE — Default CSS variables (on :root)
+   ═══════════════════════════════════════════════════════════════════════ */
+:root {
+  --font-sans: 'Plus Jakarta Sans', sans-serif;
+  --font-display: 'Outfit', sans-serif;
+  --background: 0 0% 98%;
+  --foreground: 240 10% 10%;
+  --primary: 217 91% 50%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 240 5% 93%;
+  --secondary-foreground: 240 10% 10%;
+  --muted: 240 5% 93%;
+  --muted-foreground: 240 5% 40%;
+  --accent: 280 83% 55%;
+  --accent-foreground: 0 0% 100%;
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 240 6% 85%;
+  --card: 0 0% 100%;
+  --card-foreground: 240 10% 10%;
+  --ring: 217 91% 50%;
+  color-scheme: light;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   DARK MODE — Overrides (MUST come after :root so it wins by cascade)
+   ═══════════════════════════════════════════════════════════════════════ */
+.dark {
+  --background: 240 10% 4%;
+  --foreground: 0 0% 98%;
+  --primary: 217 91% 60%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 240 10% 12%;
+  --secondary-foreground: 0 0% 98%;
+  --muted: 240 10% 10%;
+  --muted-foreground: 240 5% 65%;
+  --accent: 280 83% 65%;
+  --accent-foreground: 0 0% 100%;
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 240 10% 16%;
+  --card: 240 10% 6%;
+  --card-foreground: 0 0% 98%;
+  --ring: 217 91% 60%;
+  color-scheme: dark;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   BASE STYLES
+   ═══════════════════════════════════════════════════════════════════════ */
+@layer base {
+  body {
+    @apply bg-background text-foreground antialiased selection:bg-primary/30 selection:text-primary-foreground;
+    font-family: var(--font-sans);
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    @apply font-bold tracking-tight;
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-white via-white to-white/60;
+  }
+  .text-gradient-primary {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-cyan-300;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   DARK MODE — glass, grid, scrollbar
+   ═══════════════════════════════════════════════════════════════════════ */
+.dark .glass-panel {
+  background: rgba(255,255,255,0.02);
+  backdrop-filter: blur(24px);
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+}
+.dark .grid-pattern {
+  background-image:
+    linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+.dark ::-webkit-scrollbar { width: 10px; }
+.dark ::-webkit-scrollbar-track { background: hsl(240 10% 4%); }
+.dark ::-webkit-scrollbar-thumb { background: hsl(240 10% 16%); border-radius: 5px; }
+.dark ::-webkit-scrollbar-thumb:hover { background: hsl(240 5% 40%); }
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   LIGHT MODE — Complete overrides
+   Strategy:
+   - Flip ALL text-white/zinc to light-friendly colors
+   - PRESERVE white text inside gradient CTAs and colored buttons
+     using more-specific ancestor selectors
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* --- Glass panel & grid for light --- */
+:root:not(.dark) .glass-panel {
+  background: rgba(255,255,255,0.75);
+  backdrop-filter: blur(24px);
+  border: 1px solid rgba(0,0,0,0.07);
+  box-shadow: 0 2px 16px rgba(0,0,0,0.05), 0 1px 3px rgba(0,0,0,0.03);
+}
+:root:not(.dark) .grid-pattern {
+  background-image:
+    linear-gradient(to right, rgba(0,0,0,0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0,0,0,0.035) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+:root:not(.dark) ::-webkit-scrollbar-track { background: #fafafa; }
+:root:not(.dark) ::-webkit-scrollbar-thumb { background: #d4d4d8; border-radius: 5px; }
+:root:not(.dark) ::-webkit-scrollbar-thumb:hover { background: #a1a1aa; }
+
+
+/* ─── 1. PAGE TEXT COLORS ─────────────────────────────────────────────
+   Flip hardcoded dark-theme text colors to readable on white bg.
+   ──────────────────────────────────────────────────────────────────── */
+:root:not(.dark) .text-white   { color: #18181b; }
+:root:not(.dark) .text-zinc-300 { color: #3f3f46; }
+:root:not(.dark) .text-zinc-400 { color: #52525b; }
+:root:not(.dark) .text-zinc-500 { color: #71717a; }
+:root:not(.dark) .text-zinc-600 { color: #a1a1aa; }
+:root:not(.dark) .text-zinc-700 { color: #a1a1aa; }
+
+/* ─── 2. PRESERVE WHITE TEXT on colored / gradient backgrounds ────────
+   These selectors are MORE SPECIFIC so they override rule 1 above.
+   Covers: CTA gradient sections, colored buttons, badges, toasts.
+   ──────────────────────────────────────────────────────────────────── */
+
+/* CTA sections with gradient backgrounds */
+:root:not(.dark) [class*="bg-gradient-to-br"] .text-white,
+:root:not(.dark) [class*="bg-gradient-to-r"] .text-white,
+:root:not(.dark) [class*="bg-gradient-to-br"] .text-zinc-300 { color: #ffffff !important; }
+
+/* Colored background buttons / links */
+:root:not(.dark) [class*="bg-blue-600"].text-white,
+:root:not(.dark) [class*="bg-blue-500"].text-white,
+:root:not(.dark) [class*="bg-cyan-600"].text-white,
+:root:not(.dark) [class*="bg-cyan-500"].text-white,
+:root:not(.dark) [class*="bg-purple-600"].text-white,
+:root:not(.dark) [class*="bg-purple-500"].text-white,
+:root:not(.dark) [class*="bg-zinc-800"].text-white,
+:root:not(.dark) [class*="bg-zinc-700"].text-white { color: #ffffff !important; }
+
+/* Primary CTA button (bg-white → keep as is for light, it's white btn on white bg → make dark) */
+:root:not(.dark) a[class*="bg-white"],
+:root:not(.dark) button[class*="bg-white"] {
+  background-color: #18181b !important;
+  color: #ffffff !important;
+}
+:root:not(.dark) a[class*="bg-white"]:hover,
+:root:not(.dark) button[class*="bg-white"]:hover {
+  background-color: #27272a !important;
+}
+
+/* "MOST POPULAR" pill badge */
+:root:not(.dark) [class*="bg-gradient-to-r"][class*="from-blue-600"] {
+  color: #ffffff !important;
+}
+:root:not(.dark) [class*="bg-gradient-to-r"][class*="from-blue-600"] .text-white {
+  color: #ffffff !important;
+}
+
+/* Navbar logo — keep brand colors */
+:root:not(.dark) .text-cyan-400 { color: #0891b2; }
+
+/* Status badges like "Active" with colored dots — keep the accent colors */
+:root:not(.dark) .text-emerald-400 { color: #34d399; }
+
+/* ─── 3. BACKGROUND OVERRIDES ─────────────────────────────────────── */
+
+/* Dark bg panels → light */
+:root:not(.dark) .bg-zinc-950 { background-color: #fafafa; }
+:root:not(.dark) .bg-zinc-900 { background-color: #ffffff; }
+:root:not(.dark) .bg-zinc-900\/95 { background-color: rgba(255,255,255,0.97); }
+:root:not(.dark) .bg-zinc-900\/80 { background-color: rgba(255,255,255,0.9); }
+:root:not(.dark) .bg-zinc-950\/50 { background-color: rgba(255,255,255,0.6); }
+:root:not(.dark) .bg-black { background-color: #ffffff; }
+
+/* Subtle bg overlays → light equivalents */
+:root:not(.dark) .bg-white\/5,
+:root:not(.dark) .bg-white\/\[0\.01\],
+:root:not(.dark) .bg-white\/\[0\.02\],
+:root:not(.dark) .bg-white\/\[0\.03\],
+:root:not(.dark) .bg-white\/\[0\.04\],
+:root:not(.dark) .bg-white\/\[0\.05\] {
+  background-color: rgba(0,0,0,0.02);
+}
+
+/* But NOT inside gradient CTA sections */
+:root:not(.dark) [class*="bg-gradient-to-br"] .bg-white\/5,
+:root:not(.dark) [class*="bg-gradient-to-br"] [class*="bg-white\/"],
+:root:not(.dark) [class*="bg-gradient-to-br"] [class*="bg-black\/"] {
+  background-color: rgba(255,255,255,0.05) !important;
+}
+
+/* Input fields */
+:root:not(.dark) .bg-zinc-900\/50 { background-color: #f4f4f5; }
+:root:not(.dark) input:not([type="checkbox"]),
+:root:not(.dark) textarea {
+  color: #18181b !important;
+}
+:root:not(.dark) input::placeholder,
+:root:not(.dark) textarea::placeholder { color: #a1a1aa !important; }
+
+/* Checkbox */
+:root:not(.dark) input[type="checkbox"] {
+  background-color: #f4f4f5;
+  border-color: #d4d4d8;
+}
+
+/* Footer */
+:root:not(.dark) footer {
+  background-color: #f4f4f5 !important;
+}
+
+/* ─── 4. BORDER OVERRIDES ─────────────────────────────────────────── */
+:root:not(.dark) .border-white\/5,
+:root:not(.dark) .border-white\/10,
+:root:not(.dark) .border-white\/\[0\.08\] {
+  border-color: rgba(0,0,0,0.08);
+}
+/* Keep border colors inside gradient CTAs */
+:root:not(.dark) [class*="bg-gradient-to-br"] .border-white\/10 {
+  border-color: rgba(255,255,255,0.15) !important;
+}
+
+/* ─── 5. GLOW EFFECTS — tone down for light mode ─────────────────── */
+:root:not(.dark) [class*="blur-\[1"] {
+  opacity: 0.12;
+}
+
+/* ─── 5b. Dark gradient blobs → light-friendly ───────────────────── */
+:root:not(.dark) .bg-blue-900\/10 {
+  background-color: rgba(59,130,246,0.06);
+}
+:root:not(.dark) .bg-purple-900\/10 {
+  background-color: rgba(147,51,234,0.06);
+}
+
+/* ─── 6. SHADOWS — softer for light ──────────────────────────────── */
+:root:not(.dark) [class*="shadow-\[0_0"] {
+  box-shadow: 0 4px 20px rgba(0,0,0,0.06) !important;
+}
+
+/* Keep strong shadows on colored buttons */
+:root:not(.dark) [class*="bg-blue-600"][class*="shadow-"],
+:root:not(.dark) [class*="bg-purple-600"][class*="shadow-"],
+:root:not(.dark) [class*="bg-cyan-600"][class*="shadow-"] {
+  box-shadow: 0 4px 24px rgba(37,99,235,0.25) !important;
+}
+
+/* ─── 7. GRADIENT TEXT FIX ───────────────────────────────────────── */
+:root:not(.dark) .text-gradient {
+  background: linear-gradient(to right, #18181b, #18181b, #52525b);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ─── 8. LOGO GLOW — softer in light ─────────────────────────────── */
+:root:not(.dark) [class*="drop-shadow-\[0_0"] {
+  filter: drop-shadow(0 0 6px rgba(6,182,212,0.3));
+}
+
+/* ─── 9. ANIMATE PULSE DOT — visible in both modes ───────────────── */
+:root:not(.dark) .bg-cyan-400.animate-pulse,
+:root:not(.dark) .bg-blue-400.animate-pulse,
+:root:not(.dark) .bg-purple-400.animate-pulse {
+  /* keep as is — these are small accent dots */
+}
+
+/* ─── 10. NAVBAR light mode adjustments ──────────────────────────── */
+:root:not(.dark) header .text-zinc-400 { color: #52525b; }
+:root:not(.dark) header .text-zinc-400:hover { color: #18181b; }
+
+/* ─── 11. HOVER STATES ───────────────────────────────────────────── */
+:root:not(.dark) .hover\:text-white:hover  { color: #18181b !important; }
+:root:not(.dark) .hover\:text-blue-300:hover  { color: #2563eb; }
+:root:not(.dark) .hover\:text-cyan-300:hover  { color: #06b6d4; }
+:root:not(.dark) .hover\:text-purple-300:hover { color: #9333ea; }
+
+/* But NOT inside gradient CTAs */
+:root:not(.dark) [class*="bg-gradient-to-br"] .hover\:text-white:hover { color: #ffffff !important; }
+
+/* ─── 12. PRICING CALCULATOR — selected state ────────────────────── */
+:root:not(.dark) .bg-blue-500\/10 { background-color: rgba(59,130,246,0.08); }
+
+/* ─── SMOOTH TRANSITIONS ─────────────────────────────────────────── */
+body, .glass-panel, footer, header {
+  transition: background-color 0.35s ease, border-color 0.3s ease, color 0.2s ease, box-shadow 0.3s ease;
+}

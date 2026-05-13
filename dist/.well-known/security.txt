@@ -1,0 +1,11 @@
+# NORTPLEX Security Policy
+# https://nortplex.com/.well-known/security.txt
+
+Contact: mailto:nortplex@gmail.com
+Expires: 2027-12-31T23:59:00.000Z
+Preferred-Languages: en, ro, ru
+Canonical: https://nortplex.com/.well-known/security.txt
+Policy: https://nortplex.com/security
+
+# We take security seriously. If you discover a vulnerability,
+# please report it responsibly to the email above.

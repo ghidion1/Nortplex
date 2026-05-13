@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /dashboard/
+Disallow: /auth/
+Disallow: /login
+Disallow: /register
+
+Sitemap: https://nortplex.com/sitemap.xml
