@@ -2,6 +2,9 @@
   "name": "nortplex-client",
   "version": "1.0.0",
   "license": "MIT",
+  "engines": {
+    "node": "20.x"
+  },
   "scripts": {
     "dev": "vite",
     "dev:backend": "node --watch backend/server.js",
