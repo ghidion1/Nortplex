@@ -28,7 +28,9 @@ nortplex/
 │   ├── .env.example             ← COPIAZA IN .env SI COMPLETEAZA
 │   └── package.json
 ├── api/
-│   └── index.cjs                Entrypoint Vercel pentru /api/*
+│   ├── index.js                 Entrypoint Vercel pentru rewrite-ul /api/*
+│   ├── [...path].js             Entrypoint catch-all Vercel pentru /api/*
+│   └── _app.cjs                 Adapter catre Express
 │
 ├── package.json                 Scripts: build, start, dev
 ├── vercel.json                  Ruleaza /api/* prin Express, restul prin SPA
