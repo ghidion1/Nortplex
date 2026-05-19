@@ -1,8 +1,4 @@
-import { createRequire } from 'node:module';
-
-const require = createRequire(import.meta.url);
-
-export default function handler(req, res) {
+module.exports = function handler(req, res) {
   try {
     return require('./_app.cjs')(req, res);
   } catch (err) {
@@ -15,4 +11,4 @@ export default function handler(req, res) {
       message: err.message,
     }));
   }
-}
+};

@@ -28,8 +28,8 @@ nortplex/
 │   ├── .env.example             ← COPIAZA IN .env SI COMPLETEAZA
 │   └── package.json
 ├── api/
-│   ├── index.mjs                Entrypoint Vercel pentru rewrite-ul /api/*
-│   ├── [...path].mjs            Entrypoint catch-all Vercel pentru /api/*
+│   ├── index.js                 Entrypoint Vercel pentru rewrite-ul /api/*
+│   ├── [...path].js             Entrypoint catch-all Vercel pentru /api/*
 │   └── _app.cjs                 Adapter catre Express
 │
 ├── package.json                 Scripts: build, start, dev
