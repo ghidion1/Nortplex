@@ -11,7 +11,7 @@ const db = require('../config/db');
 const { requireAuth } = require('../middleware/auth');
 const { sendEmail } = require('../config/mailer');
 
-const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+const configuredFrontendUrl = process.env.FRONTEND_URL;
 const jwtSecret = process.env.JWT_SECRET || (process.env.NODE_ENV === 'production' ? null : 'dev-only-jwt-secret-change-me');
 
 // ─── Rate limiting ─────────────────────────────
@@ -98,6 +98,24 @@ function formatUser(user) {
   };
 }
 
+function getRequestBaseUrl(req) {
+  const proto = (req.get('x-forwarded-proto') || req.protocol || 'http').split(',')[0].trim();
+  const host = (req.get('x-forwarded-host') || req.get('host') || 'localhost').split(',')[0].trim();
+  return `${proto}://${host}`;
+}
+
+function getFrontendUrl(req) {
+  return configuredFrontendUrl || getRequestBaseUrl(req);
+}
+
+function getGoogleRedirectUri(req) {
+  return process.env.GOOGLE_REDIRECT_URI || `${getRequestBaseUrl(req)}/api/auth/google/callback`;
+}
+
+function getGithubRedirectUri(req) {
+  return process.env.GITHUB_REDIRECT_URI || `${getRequestBaseUrl(req)}/api/auth/github/callback`;
+}
+
 // ───────────────────────────────────────────────
 // AUTH ROUTES
 // ───────────────────────────────────────────────
@@ -157,7 +175,7 @@ router.post('/forgot-password', authLimiter, async (req, res) => {
         WHERE id = ?
       `).run(resetTokenHash, expiresAt, Date.now(), user.id);
 
-      const resetUrl = `${frontendUrl}/reset-password?token=${resetToken}`;
+      const resetUrl = `${getFrontendUrl(req)}/reset-password?token=${resetToken}`;
 
       sendEmail({
         to: user.email,
@@ -286,7 +304,8 @@ router.get('/me', requireAuth, (req, res) => {
 
 router.get('/google', (req, res) => {
   const clientId = process.env.GOOGLE_CLIENT_ID;
-  const redirectUri = process.env.GOOGLE_REDIRECT_URI || `${req.protocol}://${req.get('host')}/api/auth/google/callback`;
+  const frontendUrl = getFrontendUrl(req);
+  const redirectUri = getGoogleRedirectUri(req);
 
   if (!clientId || !process.env.GOOGLE_CLIENT_SECRET) {
     return res.redirect(`${frontendUrl}/login?error=google_config`);
@@ -307,7 +326,8 @@ router.get('/google', (req, res) => {
 router.get('/google/callback', async (req, res) => {
   try {
     const { code, state } = req.query;
-    const redirectUri = process.env.GOOGLE_REDIRECT_URI || `${req.protocol}://${req.get('host')}/api/auth/google/callback`;
+    const frontendUrl = getFrontendUrl(req);
+    const redirectUri = getGoogleRedirectUri(req);
 
     if (state !== req.cookies?.oauth_state) {
       return res.redirect(`${frontendUrl}/login?error=state`);
@@ -355,7 +375,8 @@ router.get('/google/callback', async (req, res) => {
 
 router.get('/github', (req, res) => {
   const clientId = process.env.GITHUB_CLIENT_ID;
-  const redirectUri = process.env.GITHUB_REDIRECT_URI || `${req.protocol}://${req.get('host')}/api/auth/github/callback`;
+  const frontendUrl = getFrontendUrl(req);
+  const redirectUri = getGithubRedirectUri(req);
 
   if (!clientId || !process.env.GITHUB_CLIENT_SECRET) {
     return res.redirect(`${frontendUrl}/login?error=github_config`);
@@ -375,7 +396,8 @@ router.get('/github', (req, res) => {
 router.get('/github/callback', async (req, res) => {
   try {
     const { code, state } = req.query;
-    const redirectUri = process.env.GITHUB_REDIRECT_URI || `${req.protocol}://${req.get('host')}/api/auth/github/callback`;
+    const frontendUrl = getFrontendUrl(req);
+    const redirectUri = getGithubRedirectUri(req);
 
     if (state !== req.cookies?.oauth_state) {
       return res.redirect(`${frontendUrl}/login?error=state`);

@@ -27,8 +27,11 @@ nortplex/
 │   │   └── status.js            Health check
 │   ├── .env.example             ← COPIAZA IN .env SI COMPLETEAZA
 │   └── package.json
+├── api/
+│   └── index.cjs                Entrypoint Vercel pentru /api/*
 │
 ├── package.json                 Scripts: build, start, dev
+├── vercel.json                  Ruleaza /api/* prin Express, restul prin SPA
 └── vite.config.js               Proxy /api → localhost:3001
 ```
 
@@ -58,13 +61,15 @@ Foloseste Gmail cu App Password:
 ### Google OAuth (optional)
 1. console.cloud.google.com → APIs & Services → Credentials
 2. Create OAuth 2.0 Client ID → Web application
-3. Redirect URI: `http://localhost:3001/api/auth/google/callback`
-4. Pune `GOOGLE_CLIENT_ID` si `GOOGLE_CLIENT_SECRET`
+3. Redirect URI local: `http://localhost:3001/api/auth/google/callback`
+4. Redirect URI productie: `https://domeniultau.com/api/auth/google/callback`
+5. Pune `GOOGLE_CLIENT_ID` si `GOOGLE_CLIENT_SECRET`
 
 ### GitHub OAuth (optional)
 1. github.com/settings/developers → OAuth Apps → New OAuth App
-2. Callback URL: `http://localhost:3001/api/auth/github/callback`
-3. Pune `GITHUB_CLIENT_ID` si `GITHUB_CLIENT_SECRET`
+2. Callback URL local: `http://localhost:3001/api/auth/github/callback`
+3. Callback URL productie: `https://domeniultau.com/api/auth/github/callback`
+4. Pune `GITHUB_CLIENT_ID` si `GITHUB_CLIENT_SECRET`
 
 ---
 
@@ -108,6 +113,24 @@ npm run build
 NODE_ENV=production npm start
 # Serverul serveste si frontul din /dist pe portul 3001
 ```
+
+---
+
+## Deploy pe Vercel
+
+`vercel.json` trimite `/api/*` catre Express prin `api/index.cjs`, iar restul rutelor catre SPA.
+
+Variabile necesare in Vercel:
+- `NODE_ENV=production`
+- `JWT_SECRET`
+- `JWT_REFRESH_SECRET`
+- `FRONTEND_URL=https://domeniultau.com`
+- `GOOGLE_CLIENT_ID` si `GOOGLE_CLIENT_SECRET`
+
+Pentru Google OAuth, in Google Cloud Console trebuie adaugat exact redirect URI-ul de productie:
+`https://domeniultau.com/api/auth/google/callback`.
+
+Nota: SQLite pe Vercel foloseste `/tmp` implicit, deci datele nu sunt persistente intre instante/deploy-uri. Pentru productie reala, seteaza `SQLITE_DB_PATH` catre un storage persistent sau migreaza la o baza de date managed.
 
 ---
 

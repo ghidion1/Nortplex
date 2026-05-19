@@ -11,6 +11,8 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 const isProd = process.env.NODE_ENV === 'production';
 
+app.set('trust proxy', 1);
+
 // ─── Security ─────────────────────────────
 app.use(helmet({
   contentSecurityPolicy: false,
@@ -75,6 +77,10 @@ app.use((req, res) => {
 });
 
 // ─── START ───────────────────────────────
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+}
+
+module.exports = app;

@@ -2,8 +2,10 @@ const Database = require('better-sqlite3');
 const path = require('path');
 const fs = require('fs');
 
-const DB_DIR = path.join(__dirname, '..', 'data');
-const DB_PATH = path.join(DB_DIR, 'nortplex.db');
+const configuredDbPath = process.env.SQLITE_DB_PATH;
+const DB_PATH = configuredDbPath ||
+  path.join(process.env.VERCEL ? '/tmp/nortplex-data' : path.join(__dirname, '..', 'data'), 'nortplex.db');
+const DB_DIR = path.dirname(DB_PATH);
 
 // Asigura-te ca directorul data/ exista
 if (!fs.existsSync(DB_DIR)) {
