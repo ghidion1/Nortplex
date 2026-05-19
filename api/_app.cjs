@@ -1,8 +1,11 @@
 let app;
+let bootError;
 
-function getApp() {
-  if (!app) app = require('../backend/server.js');
-  return app;
+try {
+  app = require('../backend/server.js');
+} catch (err) {
+  bootError = err;
+  console.error('[Express API bootstrap]', err);
 }
 
 function normalizePathParam(value) {
@@ -12,6 +15,16 @@ function normalizePathParam(value) {
 }
 
 module.exports = function handler(req, res) {
+  if (bootError) {
+    res.statusCode = 500;
+    res.setHeader('content-type', 'application/json; charset=utf-8');
+    return res.end(JSON.stringify({
+      error: 'API bootstrap failed',
+      code: bootError.code || null,
+      message: bootError.message,
+    }));
+  }
+
   const path = normalizePathParam(req.query?.path);
 
   if (path && (req.url.startsWith('/api/index') || req.url.startsWith('/api/[...path]'))) {
@@ -21,7 +34,7 @@ module.exports = function handler(req, res) {
   }
 
   try {
-    return getApp()(req, res);
+    return app(req, res);
   } catch (err) {
     console.error('[Express API runtime]', err);
     res.statusCode = 500;
