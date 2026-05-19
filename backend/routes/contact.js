@@ -3,7 +3,7 @@ const router = express.Router();
 const rateLimit = require('express-rate-limit');
 const { v4: uuidv4 } = require('uuid');
 
-const db = require('../config/db');
+const db = require('../config/dbProxy');
 const { sendEmail } = require('../config/mailer');
 
 // Max 5 mesaje per IP la 30 minute

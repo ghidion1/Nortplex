@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const db = require('../config/db');
+const db = require('../config/dbProxy');
 
 /**
  * Middleware: verifica JWT din cookie sau header Authorization

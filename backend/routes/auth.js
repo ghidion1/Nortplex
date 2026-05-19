@@ -7,7 +7,7 @@ const { v4: uuidv4 } = require('uuid');
 const rateLimit = require('express-rate-limit');
 const https = require('https');
 
-const db = require('../config/db');
+const db = require('../config/dbProxy');
 const { requireAuth } = require('../middleware/auth');
 const { sendEmail } = require('../config/mailer');
 
