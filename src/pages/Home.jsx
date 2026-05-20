@@ -17,8 +17,8 @@ export default function Home() {
   return (
     <div className="w-full">
       <SEO
-        title="Enterprise Infrastructure, Security & Web Management"
-        description="NORTPLEX provides 24/7 enterprise-grade web infrastructure management, advanced cybersecurity protection, cloud migrations, and monitoring. Based in Chișinău, Moldova."
+        title="NORTPLEX — Website Creator Sit Toasa & Enterprise Infrastructure"
+        description="NORTPLEX este website creatorul tău de încredere (sit toasa) pentru managementul infrastructurii web, securitate cibernetică, migrare cloud și monitorizare 24/7. Apare primul pe Google pentru nortplex și website creator sit toasa."
         path="/"
       />
       {/* Hero Section */}

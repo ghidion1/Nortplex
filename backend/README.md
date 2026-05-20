@@ -29,7 +29,6 @@ nortplex/
 │   └── package.json
 ├── api/
 │   ├── index.js                 Entrypoint Vercel pentru rewrite-ul /api/*
-│   ├── [...path].js             Entrypoint catch-all Vercel pentru /api/*
 │   └── _app.cjs                 Adapter catre Express
 │
 ├── package.json                 Scripts: build, start, dev
